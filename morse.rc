@@ -1,0 +1,184 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Neutral resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NEU)
+#ifdef _WIN32
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+SOUNDPANEL DIALOG DISCARDABLE  0, 0, 438, 206
+STYLE DS_MODALFRAME | DS_SETFOREGROUND | DS_3DLOOK | DS_CENTER | 
+    WS_MINIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Morse Code Generator"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CTEXT           "",IDC_GRAPH,5,5,392,97,SS_SUNKEN | WS_BORDER
+    PUSHBUTTON      "&Generate",IDC_GENERATE,245,172,50,21
+    CONTROL         "Slider1",IDC_SLIDER1,"msctls_trackbar32",TBS_AUTOTICKS | 
+                    TBS_BOTH | WS_TABSTOP,10,145,100,28
+    GROUPBOX        "Sample Rate",IDC_STATIC,7,127,108,68
+    CTEXT           "8k",IDC_STATIC,11,176,18,12,SS_CENTERIMAGE
+    CTEXT           "16k",IDC_STATIC,51,176,18,12,SS_CENTERIMAGE
+    CTEXT           "44k",IDC_STATIC,93,176,18,12,SS_CENTERIMAGE
+    GROUPBOX        "Initial Phase",IDC_STATIC,121,127,108,32
+    EDITTEXT        IDC_PHASE,126,138,91,14,ES_RIGHT | ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    GROUPBOX        "Frequency (Hz)",IDC_STATIC,121,161,108,32
+    EDITTEXT        IDC_FREQ,126,174,91,14,ES_RIGHT | ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    CONTROL         "Slider1",IDC_ZOOM,"msctls_trackbar32",TBS_VERT | 
+                    TBS_BOTH | WS_TABSTOP,403,4,27,96
+    EDITTEXT        IDC_MSG,253,138,164,14,ES_AUTOHSCROLL
+    GROUPBOX        "Message",IDC_STATIC,243,127,180,32
+    CONTROL         "Slider1",IDC_POSIT,"msctls_trackbar32",TBS_BOTH | 
+                    WS_TABSTOP,6,100,391,21
+    PUSHBUTTON      "&Play",IDC_PLAY,308,172,50,21
+    PUSHBUTTON      "&Save File",IDC_SAVE,373,172,50,21
+    LTEXT           "<carlosbar@gmail.com>",IDC_STATIC,355,196,77,8
+    LTEXT           "morsegen 1.0.0.2",IDC_STATIC,7,196,87,8
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    "SOUNDPANEL", DIALOG
+    BEGIN
+        BOTTOMMARGIN, 204
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+#endif    // Neutral resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Portuguese (Brazil) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_PTB)
+#ifdef _WIN32
+LANGUAGE LANG_PORTUGUESE, SUBLANG_PORTUGUESE_BRAZILIAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ICON1               ICON    DISCARDABLE     "icon1.ico"
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,2
+ PRODUCTVERSION 1,0,0,2
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x40004L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "041604b0"
+        BEGIN
+            VALUE "Comments", "carlosbar@gmail.com\0"
+            VALUE "CompanyName", "Carlos Barcellos\0"
+            VALUE "FileDescription", "morsegen\0"
+            VALUE "FileVersion", "1, 0, 0, 2\0"
+            VALUE "InternalName", "morsegen\0"
+            VALUE "LegalCopyright", "Copyright © Carlos Barcellos 2010\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "morsegen.exe\0"
+            VALUE "PrivateBuild", "\0"
+            VALUE "ProductName", "morsegen\0"
+            VALUE "ProductVersion", "1, 0, 0, 2\0"
+            VALUE "SpecialBuild", "\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x416, 1200
+    END
+END
+
+#endif    // !_MAC
+
+#endif    // Portuguese (Brazil) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
