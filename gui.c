@@ -1,3 +1,16 @@
+/**
+ * Module Description: windows graphical user interface to morse code generator
+ *
+ * Copyright © 2010 Carlos Barcellos
+ *
+ * $Id$
+ * $Source$
+ * $Revision$
+ * $Date$
+ * $Author$
+ */
+static const char rcsid [] = "@(#) $Id$ $RCSfile$$Revision$";
+
 /* windows only */
 
 #include <windows.h>
@@ -28,7 +41,7 @@ int			samplesize[MAX_HARM];
 char		*wav;
 int			wavesize;
 
-int generate(char *msg,int freq,int phase,double time_base,int bps,int samplerate,NEWPOINT np,WAVEDATA wd,void *usrptr);
+int generate(char *msg,int freq,int phase,int nharm,double time_base,int bps,int samplerate,NEWPOINT np,WAVEDATA wd,void *usrptr);
 
 /*
 	adjust frequency based on current samplerate
@@ -236,7 +249,7 @@ BOOL CALLBACK evthandler(HWND h,UINT uMsg,WPARAM wParam,LPARAM  lParam)
 		break;
 	case WM_COMMAND:
 		if(LOWORD(wParam) == (WORD) IDC_PLAY) {
-			if(wav) freq=PlaySound(wav,NULL,SND_MEMORY | SND_SYNC | SND_NODEFAULT);
+			if(wav) freq=PlaySound(wav,NULL,SND_MEMORY | SND_ASYNC | SND_NODEFAULT);
 		} else if(LOWORD(wParam) == (WORD) IDC_PHASE) {
 			GetWindowText(GetDlgItem(h,IDC_PHASE),buf,sizeof(buf));
 			if(atoi(buf) > 360) {
@@ -253,7 +266,7 @@ BOOL CALLBACK evthandler(HWND h,UINT uMsg,WPARAM wParam,LPARAM  lParam)
 			samplerate=rates[SendMessage(GetDlgItem(h,IDC_SLIDER1),TBM_GETPOS,0,0)-1];
 			GetWindowText(GetDlgItem(h,IDC_MSG),buf,sizeof(buf));
 			if(strlen(buf)) {
-				generate(buf,freq,phase,.05,16,samplerate,newpoint,wavedata,h);
+				generate(buf,freq,phase,8,.05,16,samplerate,newpoint,wavedata,h);
 				InvalidateRect(GetDlgItem(h,IDC_GRAPH),NULL,TRUE);
 				SendMessage(h,WM_PAINT,0,0);
 			}

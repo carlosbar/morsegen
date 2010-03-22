@@ -1,4 +1,15 @@
-#define LEGAL "\nCarlos Barcellos <carlosbar@gmail.com>\nMay the force be with you!\n"
+/**
+ * Module Description: morse code modulation and related definitions
+ *
+ * Copyright © 2010 Carlos Barcellos
+ *
+ * $Id$
+ * $Source$
+ * $Revision$
+ * $Date$
+ * $Author$
+ */
+static const char rcsid [] = "@(#) $Id$ $RCSfile$$Revision$";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -134,6 +145,7 @@ double gettotaltime(char *msg,double time_base)
 	* @param msg        plain text message
 	* @param freq       fundamental frequency
 	* @param phase      initial phase
+	* @param nharm		number of harmonics to add to fundamental wave (min: 1, max: MAX_HARMONICS)
 	* @param time_base  time base used for morse code modulation
 	* @param bps        bits per sample
 	* @param samplerate sample rate
@@ -142,7 +154,7 @@ double gettotaltime(char *msg,double time_base)
 	* @param usrptr     user pointer informed to callback functions
 	* @return - 0 for success or an error code
 */
-int generate(char *msg,int freq,int phase,double time_base,int bps,int samplerate,NEWPOINT np,WAVEDATA wd,void *usrptr)
+int generate(char *msg,int freq,int phase,int nharm,double time_base,int bps,int samplerate,NEWPOINT np,WAVEDATA wd,void *usrptr)
 {
 	int				x,y,w;
 	struct st_fmt	fmt,tfmt={0};
@@ -153,9 +165,10 @@ int generate(char *msg,int freq,int phase,double time_base,int bps,int samplerat
 	double			ttime;
 	int				t,mute,interval,rawsize,totaltime;
 	int				med,end;
-	struct st_harm	harmonics[1];	/* number of harmonics to add to fundamental wave */
+	struct st_harm	*harmonics;
 	int				max_volume=((1<<(bps-1))-1),sum;
 
+	nharm=(nharm < 1) ? 1 : (nharm > MAX_HARMONICS) ? MAX_HARMONICS : nharm;
 	/* get morse code message */
 	morsecode(msg,buf,sizeof(buf));
 	ttime=gettotaltime(buf,time_base);
@@ -168,7 +181,12 @@ int generate(char *msg,int freq,int phase,double time_base,int bps,int samplerat
 	if(wd) wd(im_start,0,0,usrptr);
 	if(np) np(im_start,0,0,0,0,samplerate,bps,totaltime,usrptr);
 	/* set harmonic values */
-	for(x=0;x < sizeof(harmonics)/sizeof(harmonics[0]);x++) {
+	harmonics=calloc(1,sizeof(struct st_harm)*nharm);
+	if(!harmonics) {
+		printf("error allocating memory\n");
+		return(1);
+	}
+	for(x=0;x < nharm;x++) {
 		harmonics[x].freq=freq*(x+1);
 		harmonics[x].phase=phase;
 		harmonics[x].vol=((1<<(bps-(x+2)))-1);
@@ -201,13 +219,14 @@ int generate(char *msg,int freq,int phase,double time_base,int bps,int samplerat
 	}
 	for(x=0,sum=0;x < totaltime;x++) {
 		/* harmonic waves  */
-		for(sample=0,y=0;y < sizeof(harmonics)/sizeof(harmonics[0]);y++) {
-			if(mute) {
+		for(sample=0,y=0;y < nharm;y++) {
+			if(mute || harmonics[y].freq > samplerate/2-1) {
 				if(np) np(im_data,y+1,harmonics[y].freq,x,0,samplerate,bps,totaltime,usrptr);
 				continue;
 			}
 			/* genereate sample */
-			v=harmonics[y].vol*sin(2.*PI*x*(double) harmonics[y].freq/samplerate+radian(harmonics[y].phase));
+			v=harmonics[y].vol*sin(2.*PI*x*(double) harmonics[y].freq/(double) samplerate+radian(harmonics[y].phase));
+			if(np) np(im_data,y+1,harmonics[y].freq,x,v,samplerate,bps,totaltime,usrptr);
 			/* calculate composite wave (waves cancel or add to each other) */
 			sample+=v;
 		}
@@ -243,6 +262,7 @@ int generate(char *msg,int freq,int phase,double time_base,int bps,int samplerat
 	}
 	if(wd) wd(im_end,0,0,usrptr);
 	if(np) np(im_end,0,0,x,0,samplerate,bps,totaltime,usrptr);
+	free(harmonics);
 	return(0);
 }
 
@@ -310,7 +330,7 @@ int main(int argc,char **argv)
 	if(argc > 2) freq=atoi(argv[2]);
 	freq=(freq < 20 || freq > samplerate/2) ? FREQ_FUNDAMENTAL : freq;
 	/* generate wav file */
-	generate(argv[1],freq,phase,TIME_BASE,bps,samplerate,newpoint,wavedata,(void *) NULL);
+	generate(argv[1],freq,phase,8,TIME_BASE,bps,samplerate,newpoint,wavedata,(void *) NULL);
 	return(0);
 }
 #endif
