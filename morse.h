@@ -13,7 +13,7 @@
 #ifndef MORSE_H
 #define MORSE_H
 
-#define VERSION			"morsegen 1.0.0.3"
+#define VERSION			"morsegen 1.0.0.3 by Carlos Barcellos <carlosbar@gmail.com>"
 #define TARGET_FILE		"morse.wav"		/* default wave filename */
 #define MAX_HARMONICS	12				/* maximum of harmonics to be calculated from the fundamental frequency */
 #define LETTER_PAUSE	"-3"			/* time sequences after a letter */
