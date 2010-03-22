@@ -331,15 +331,15 @@ int main(int argc,char **argv)
 	for(x=2;x < argc;x+=2) {
 		if(x+1 >= argc) {
 			break;
-		} else if(strcmp(argv[x],"-f")) {
+		} else if(!strcmp(argv[x],"-f")) {
 			freq=atoi(argv[x+1]);
-		} else if(strcmp(argv[x],"-p")) {
+		} else if(!strcmp(argv[x],"-p")) {
 			phase=atoi(argv[x+1]);
-		} else if(strcmp(argv[x],"-s")) {
+		} else if(!strcmp(argv[x],"-s")) {
 			samplerate=atoi(argv[x+1]);
-		} else if(strcmp(argv[x],"-b")) {
+		} else if(!strcmp(argv[x],"-b")) {
 			bps=atoi(argv[x+1]);
-		} else if(strcmp(argv[x],"-h")) {
+		} else if(!strcmp(argv[x],"-h")) {
 			nharm=atoi(argv[x+1]);
 		}
 	}
