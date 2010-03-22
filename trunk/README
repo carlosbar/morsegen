@@ -1,7 +1,7 @@
 
 Windows:
 
-open morsegen.dwd with Visual Studio 6 or higher
+open morsegen.dsw with Visual Studio 6 or higher
 build it
 execute it
 
