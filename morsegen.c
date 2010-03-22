@@ -168,7 +168,12 @@ int generate(char *msg,int freq,int phase,int nharm,double time_base,int bps,int
 	struct st_harm	*harmonics;
 	int				max_volume=((1<<(bps-1))-1),sum;
 
+	/* default values */
 	nharm=(nharm < 1) ? 1 : (nharm > MAX_HARMONICS) ? MAX_HARMONICS : nharm;
+	bps=(bps != 16 && bps != 24 && bps != 32) ? BITS_PER_SAMPLE : bps;
+	samplerate=(samplerate != 8000 && samplerate != 16000 && samplerate != 44100) ? SAMPLE_RATE : samplerate;
+	phase=(phase > 360) ? PHASE : phase;
+	freq=(freq < 20 || freq > samplerate/2-1) ? FREQ_FUNDAMENTAL : freq;
 	/* get morse code message */
 	morsecode(msg,buf,sizeof(buf));
 	ttime=gettotaltime(buf,time_base);
@@ -300,40 +305,48 @@ static void wavedata(infoMode mode,char *buf,int size,void *usrptr)
 /* Entry Points */
 
 #ifdef _WIN32
+
 int WINAPI WinMain(HINSTANCE hinst,HINSTANCE hprev,char *cmdline,int show)
 {
 	return(startgui(hinst));
 }
+
 #else
+
 int main(int argc,char **argv)
 {
-	int				freq=FREQ_FUNDAMENTAL;
-	int				phase=0;
-	int				samplerate=SAMPLE_RATE;
-	int				bps=BITS_PER_SAMPLE;
+	int				freq=FREQ_FUNDAMENTAL,phase=0,samplerate=SAMPLE_RATE,bps=BITS_PER_SAMPLE,x,nharm=MAX_HARMONICS;
 
 	/* verify received parameters */
 	if(argc < 2) {
-		printf("\nmorsegen <message> [frequency:3500] [initial phase:0] [sample rate:44100 (8000, 16000, 44100)] [bits per sample:16 (16, 24, 32)] --> Generates a wav file with corresponding morse code\n%s",LEGAL);
+		printf("\n%s\nusage: morsegen <message> [options]\n\n"
+			"   -f ddd  fundamental frequency, default is 3500\n"
+			"   -p ddd  initial phase (0..359), default is 0\n"
+			"   -s ddd  sample rate, valid values are 8000,16000 and default 44100\n"
+			"   -b ddd  bits per sample, valid values are 24, 32 and default 16\n"
+			"   -h ddd  number of harmonics (1..%d), default is %d\n"
+			,VERSION,MAX_HARMONICS,MAX_HARMONICS);
 		return(1);
 	}
-	/* bits per sample */
-	if(argc > 5) bps=atoi(argv[5]);
-	bps=(bps != 16 && bps != 24 && bps != 32) ? BITS_PER_SAMPLE : bps;
-	/* sample rate */
-	if(argc > 4) samplerate=atoi(argv[4]);
-	samplerate=(samplerate != 8000 && samplerate != 16000 && samplerate != 44100) ? SAMPLE_RATE : samplerate;
-	/* initial phase */
-	if(argc > 3) phase=atoi(argv[3]);
-	phase=(phase > 360) ? PHASE : phase;
-	/* frequency */
-	if(argc > 2) freq=atoi(argv[2]);
-	freq=(freq < 20 || freq > samplerate/2) ? FREQ_FUNDAMENTAL : freq;
+	for(x=2;x < argc;x+=2) {
+		if(x+1 >= argc) {
+			break;
+		} else if(strcmp(argv[x],"-f")) {
+			freq=atoi(argv[x+1]);
+		} else if(strcmp(argv[x],"-p")) {
+			phase=atoi(argv[x+1]);
+		} else if(strcmp(argv[x],"-s")) {
+			samplerate=atoi(argv[x+1]);
+		} else if(strcmp(argv[x],"-b")) {
+			bps=atoi(argv[x+1]);
+		} else if(strcmp(argv[x],"-h")) {
+			nharm=atoi(argv[x+1]);
+		}
+	}
+	printf("freq: %d, phase: %d, sample rate: %d, bps: %d, harmonics: %d\n",freq,phase,samplerate,bps,nharm);
 	/* generate wav file */
-	generate(argv[1],freq,phase,8,TIME_BASE,bps,samplerate,newpoint,wavedata,(void *) NULL);
+	generate(argv[1],freq,phase,nharm,TIME_BASE,bps,samplerate,newpoint,wavedata,(void *) NULL);
 	return(0);
 }
+
 #endif
-
-
-
