@@ -164,7 +164,6 @@ int generate(char *msg,int freq,int phase,int nharm,double time_base,int bps,int
 	char			buf[512],*p;
 	double			ttime;
 	int				t,mute,interval,rawsize,totaltime;
-	int				med,end;
 	struct st_harm	*harmonics;
 	int				max_volume=((1<<(bps-1))-1),sum;
 
@@ -216,10 +215,9 @@ int generate(char *msg,int freq,int phase,int nharm,double time_base,int bps,int
 	if(p) {
 		/* calculate time for the first pressed key */
 		t=(int) (atof(p)*time_base*samplerate);
+		/* negative numbers means silence during time period */
 		mute=(t < 0) ? 1 : 0;
 		t=abs(t);
-		med=t/3;
-		end=t/2;
 		interval=0;
 	}
 	for(x=0,sum=0;x < totaltime;x++) {
@@ -258,10 +256,9 @@ int generate(char *msg,int freq,int phase,int nharm,double time_base,int bps,int
 				/* calculate duration of the new "pressed" key */
 				interval=0;
 				t=(int) (atof(p)*time_base*samplerate);
+				/* negative numbers means silence during time period */
 				mute=(t < 0) ? 1 : 0;
 				t=abs(t);
-				med=t/3;
-				end=t/2;
 			}
 		}
 	}
