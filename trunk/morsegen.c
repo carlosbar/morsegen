@@ -320,12 +320,12 @@ int main(int argc,char **argv)
 	/* verify received parameters */
 	if(argc < 2) {
 		printf("\n%s\nusage: morsegen <message> [options]\n\n"
-			"   -f ddd  fundamental frequency, default is 3500\n"
-			"   -p ddd  initial phase (0..359), default is 0\n"
-			"   -s ddd  sample rate, valid values are 8000,16000 and default 44100\n"
-			"   -b ddd  bits per sample, valid values are 24, 32 and default 16\n"
-			"   -h ddd  number of harmonics (1..%d), default is %d\n"
-			,VERSION,MAX_HARMONICS,MAX_HARMONICS);
+			"   -f ddd  fundamental frequency, default is %d\n"
+			"   -p ddd  initial phase (0..359). default is %d\n"
+			"   -s ddd  sample rate, valid values are 8000,16000,44100. default %d\n"
+			"   -b ddd  bits per sample, valid values are 16,24,32. default is %d\n"
+			"   -h ddd  number of harmonics (1..%d). default is %d\n"
+			,VERSION,freq,phase,samplerate,bps,MAX_HARMONICS,nharm);
 		return(1);
 	}
 	for(x=2;x < argc;x+=2) {
