@@ -26,7 +26,7 @@ LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
 // Dialog
 //
 
-SOUNDPANEL DIALOG DISCARDABLE  0, 0, 438, 206
+SOUNDPANEL DIALOG DISCARDABLE  0, 0, 438, 199
 STYLE DS_MODALFRAME | DS_SETFOREGROUND | DS_3DLOOK | DS_CENTER | 
     WS_MINIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
 CAPTION "Morse Code Generator"
@@ -54,25 +54,7 @@ BEGIN
                     WS_TABSTOP,6,100,391,21
     PUSHBUTTON      "&Play",IDC_PLAY,308,172,50,21
     PUSHBUTTON      "&Save File",IDC_SAVE,373,172,50,21
-    LTEXT           "<carlosbar@gmail.com>",IDC_STATIC,355,196,77,8
-    LTEXT           "morsegen 1.0.0.2",IDC_STATIC,7,196,87,8
 END
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// DESIGNINFO
-//
-
-#ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO DISCARDABLE 
-BEGIN
-    "SOUNDPANEL", DIALOG
-    BEGIN
-        BOTTOMMARGIN, 204
-    END
-END
-#endif    // APSTUDIO_INVOKED
 
 #endif    // Neutral resources
 /////////////////////////////////////////////////////////////////////////////
@@ -129,8 +111,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,2
- PRODUCTVERSION 1,0,0,2
+ FILEVERSION 1,0,0,3
+ PRODUCTVERSION 1,0,0,3
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -148,14 +130,14 @@ BEGIN
             VALUE "Comments", "carlosbar@gmail.com\0"
             VALUE "CompanyName", "Carlos Barcellos\0"
             VALUE "FileDescription", "morsegen\0"
-            VALUE "FileVersion", "1, 0, 0, 2\0"
+            VALUE "FileVersion", "1, 0, 0, 3\0"
             VALUE "InternalName", "morsegen\0"
             VALUE "LegalCopyright", "Copyright © Carlos Barcellos 2010\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "morsegen.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "morsegen\0"
-            VALUE "ProductVersion", "1, 0, 0, 2\0"
+            VALUE "ProductVersion", "1, 0, 0, 3\0"
             VALUE "SpecialBuild", "\0"
         END
     END
