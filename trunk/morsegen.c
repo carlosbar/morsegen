@@ -89,6 +89,7 @@ struct st_wav {
 #define PCM_TYPE			16
 #define TIME_BASE			.03	/* seconds */
 #define	FREQ_FUNDAMENTAL	3500
+#define PI					((double) 3.14159265)
 
 /**
 	harmonics used for the modulation
@@ -104,16 +105,7 @@ struct st_harm {
 */
 double radian(double degree)
 {
-#define PI ((double) 3.14159265)
-	return(PI/180*degree);
-}
-
-/**
-	get sine value for the current degree
-*/
-double point(double degree,double amp)
-{
-	return(amp*sin(radian(degree)));
+	return(PI/180.*degree);
 }
 
 /**
@@ -158,11 +150,11 @@ int generate(char *msg,int freq,int phase,double time_base,int bps,int samplerat
 	struct st_chunk	chunk;
 	double			sample,v;
 	char			buf[512],*p;
-	double			ttime,cycles;
+	double			ttime;
 	int				t,mute,interval,rawsize,totaltime;
 	int				med,end;
-	struct st_harm	harmonics[12];	/* number of harmonics to add to fundamental wave */
-	int				max_volume=((1<<(bps-1))-1);
+	struct st_harm	harmonics[1];	/* number of harmonics to add to fundamental wave */
+	int				max_volume=((1<<(bps-1))-1),sum;
 
 	/* get morse code message */
 	morsecode(msg,buf,sizeof(buf));
@@ -207,23 +199,17 @@ int generate(char *msg,int freq,int phase,double time_base,int bps,int samplerat
 		end=t/2;
 		interval=0;
 	}
-	for(x=0;x < totaltime;x++) {
+	for(x=0,sum=0;x < totaltime;x++) {
 		/* harmonic waves  */
 		for(sample=0,y=0;y < sizeof(harmonics)/sizeof(harmonics[0]);y++) {
-			cycles=samplerate/(double) harmonics[y].freq;
-			/* is this frequency higher than half of sample rate? (nyquist ratio) */
-			if(mute || cycles < 2.) {
-				/* with this sample rate we cannot digitalize this frequency */
+			if(mute) {
 				if(np) np(im_data,y+1,harmonics[y].freq,x,0,samplerate,bps,totaltime,usrptr);
 				continue;
 			}
+			/* genereate sample */
+			v=harmonics[y].vol*sin(2.*PI*x*(double) harmonics[y].freq/samplerate+radian(harmonics[y].phase));
 			/* calculate composite wave (waves cancel or add to each other) */
-			v=point(harmonics[y].phase,1)*harmonics[y].vol;
-			if(np) np(im_data,y+1,harmonics[y].freq,x,v,samplerate,bps,totaltime,usrptr);
 			sample+=v;
-			/* calculate next step */
-			harmonics[y].phase+=360./cycles;
-			while(harmonics[y].phase >= 360.) harmonics[y].phase-=360.;
 		}
 		/* save in the wav file the generated sample value */
 		rawsize-=bps/BITS_IN_BYTE;
