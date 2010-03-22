@@ -9,7 +9,6 @@
  * $Date$
  * $Author$
  */
-static const char rcsid [] = "@(#) $Id$ $RCSfile$$Revision$";
 
 #ifndef MORSE_H
 #define MORSE_H
