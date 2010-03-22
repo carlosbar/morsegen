@@ -311,7 +311,7 @@ int WINAPI WinMain(HINSTANCE hinst,HINSTANCE hprev,char *cmdline,int show)
 	return(startgui(hinst));
 }
 
-#else
+#endif
 
 int main(int argc,char **argv)
 {
@@ -348,5 +348,3 @@ int main(int argc,char **argv)
 	generate(argv[1],freq,phase,nharm,TIME_BASE,bps,samplerate,newpoint,wavedata,(void *) NULL);
 	return(0);
 }
-
-#endif
