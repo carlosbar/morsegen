@@ -1,17 +1,61 @@
+/**
+ * Module Description: morse code modulation and related definitions
+ *
+ * Copyright © 2010 Carlos Barcellos
+ *
+ * $Id$
+ * $Source$
+ * $Revision$
+ * $Date$
+ * $Author$
+ */
+static const char rcsid [] = "@(#) $Id$ $RCSfile$$Revision$";
+
 #ifndef MORSE_H
 #define MORSE_H
 
-#define TARGET_FILE	"morse.wav"
+#define TARGET_FILE		"morse.wav"		/* default wave filename */
+#define MAX_HARMONICS	12				/* maximum of harmonics to be calculated from the fundamental frequency */
+#define LETTER_PAUSE	"-3"			/* time sequences after a letter */
+#define	WORD_PAUSE		"-7"			/* time sequences after a word */
 
+/**
+ * enumeration for the information mode used by the callback functions
+ */
 typedef enum en_infoMode {
-	im_start,
-	im_data,
-	im_end,
+	im_start,	/* information is about to start */
+	im_data,	/* data received */
+	im_end,		/* end of information */
 } infoMode;
 
+/**
+ * callback function executed whenever a new frequency sample is calculated
+ * @param mode          info mode (see enum infoMode)
+ * @param harmonic      current harmonic (0=average, 1=fundamental, ...)
+ * @param freq          harmonic frequency (0=average)
+ * @param x             current x position (time)
+ * @param y             current y position (amplitude)
+ * @param rate          sample rate
+ * @param bps           bits per sample
+ * @param totalsamples  totalsamples for current modulation
+ * @param usrptr        user pointer
+ */
 typedef void (*NEWPOINT)(infoMode mode,int harmonic,int freq,int x,double y,int rate,int bps,int totalsamples,void *usrptr);
+
+/**
+ * callback function executed whenever wave data is to be save inside the wave file
+ * @param mode    info mode (see enum infoMode)
+ * @param buf     buffer to be saved in the wave file
+ * @param size    size of the buffer (in bytes)
+ * @param usrptr        user pointer
+ */
 typedef void (*WAVEDATA)(infoMode mode,char *buf,int size,void *usrptr);
 
+/**
+ * morse code translation international table
+ * dot  == 1 time
+ * dash == 3 times
+*/
 static struct st_morse {
 	char	key;
 	char	*snd;
@@ -55,7 +99,11 @@ static struct st_morse {
 	{'.',"1,3,1,3,1,3"},
 	{',',"3,3,1,1,3,3"}};
 
-
+/**
+ * translate a key into a morse code value
+ * @param key key to be translated
+ * @return a pointer to morse code translation string. Notice a dot "." will be returned if the key is not found
+ */
 static char *getsound(char key)
 {
 	int	x;
@@ -69,9 +117,13 @@ static char *getsound(char key)
 	return("1,2,1,2,1,2");
 }
 
-#define LETTER_PAUSE	"-3"
-#define	WORD_PAUSE		"-7"
-
+/**
+ * converts a string into a morse code representation for dots and dashes
+ * @param msg message to be converted
+ * @param buf buffer to return conversion
+ * @param sz  size of buffer to store the converstion
+ * @return a pointer to buf
+ */
 static char	*morsecode(char *msg,char *buf,int sz)
 {
 	char	*q=msg,*s;
