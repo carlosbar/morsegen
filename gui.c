@@ -111,6 +111,10 @@ void drawgraph(HWND h,HDC hdc,int zoom,int posit)
 				position--;
 				continue;
 			}
+			if(l%100 == 0 ||  l+1 == totalsample) {
+				sprintf(buf,"%03d%%",(l+1)*100/totalsample);
+				TextOut(hdc,5,rc.bottom-20,buf,strlen(buf));
+			}
 			y=*psample*rc.bottom/2/max_vol;
 			y=rc.bottom-(rc.bottom/2+y);
 			d=((double) l++/totalsample*rc.right*zoom);
@@ -132,6 +136,9 @@ void drawgraph(HWND h,HDC hdc,int zoom,int posit)
 			LineTo(hdc,x,y);
 			lastx=x;
 			lasty=y;
+		}
+		if(l%100 == 0 ||  l+1 == totalsample) {
+			TextOut(hdc,5,rc.bottom-20,"100%",4);
 		}
 	}
 }
