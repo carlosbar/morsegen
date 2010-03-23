@@ -3,12 +3,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define MAX_HARMONICS	40
-
-struct st_max {
-	int		i;
-	int		d;
-};
+#define PI	3.14159265358979323846264338327
 
 /*
    This computes an in-place complex-to-complex FFT 
@@ -88,10 +83,10 @@ short FFT(short int dir,long m,double *x,double *y)
 int main(int argc,char *argv[])
 {
 	FILE			*f;
-	int				samples=0,x,y,z,samplerate=44100;
+	int				samples=0,x,samplerate=44100,osamples;
 	char			buf[512];
-	double			r[1 << 15],i[1 << 15];
-	struct st_max	max[MAX_HARMONICS];
+	double			*r=NULL,*i=NULL,amp,phase;
+	int				nr=0,ni=0;
 
 	if(argc < 2) {
 		printf("fft <filename>\n");
@@ -102,36 +97,37 @@ int main(int argc,char *argv[])
 		printf("error opening file\n");
 		return(1);
 	}
+	osamples=0;
 	while(fgets(buf,sizeof(buf),f)) {
 		if(*buf == ';') continue;
-		r[samples]=atof(buf);
-		i[samples]=0;
-		if(++samples >= 1 << 15) break;
+		r=(!osamples) ? malloc(sizeof(double)) : realloc(r,sizeof(double)*(osamples+1));
+		i=(!osamples) ? malloc(sizeof(double)) : realloc(i,sizeof(double)*(osamples+1));
+		r[osamples]=atof(buf);
+		i[osamples]=0;
+		osamples++;
 	}
 	fclose(f);
-	x=15;
-	while(samples < 1 << x) x--;
-	memset(max,0,sizeof(max));
-	FFT(1,x,r,i);
-	for(samples=0;samples < (1 << x)/2;samples++) {
-		r[samples]=sqrt(r[samples]*r[samples]+i[samples]*i[samples]);
-		for(y=0;y < MAX_HARMONICS;y++) {
-			if(abs((int) r[samples]) > max[y].d) {
-				for(z=MAX_HARMONICS-1;z > y;z--) {
-					max[z].d=max[z-1].d;
-					max[z].i=max[z-1].i;
-				}
-				max[y].d=abs((int) r[samples]);
-				max[y].i=samples;
-				break;
-			}
-		}
+	samples=(int) pow(2,ceil(log(osamples)/log(2)));
+	if(samples > osamples) {
+		r=realloc(r,sizeof(double)*samples);
+		i=realloc(i,sizeof(double)*samples);
+		memset(&r[osamples],0,(samples-osamples)*sizeof(double));
+		memset(&i[osamples],0,(samples-osamples)*sizeof(double));
+	}
+	FFT(1,(long) ceil(log(samples)/log(2)),r,i);
+	for(x=0;x < samples/2;x++) {
+		/* amplitude is calculate from abs(complex) == sqrt(real^2 + imag^2)*2 */
+		amp=sqrt(r[x]*r[x]+i[x]*i[x])*2;
+		/* phase (in radians) is calculate from atan(imag/real) */
+		phase=180/PI*atan(i[x]/r[x]);
+		r[x]=amp;
+		i[x]=phase;
 	}
 	f=fopen("fft.csv","w");
-	if(f) fprintf(f,"freq;amp\n");
-	for(y=0;f && y < MAX_HARMONICS;y++) {
-		fprintf(f,"%d;%d\n",max[y].i*samplerate/(1 << x),max[y].d);
+	if(f) fprintf(f,"freq;amp;phase\n");
+	for(x=0;f && x < samples/2;x++) {
+		fprintf(f,"%d;%d;%d\n",(samplerate*x/samples),(int) r[x],(int) i[x]);
 	}
-	if(f)	fclose(f);
+	if(f) fclose(f);
 	return(0);
 }

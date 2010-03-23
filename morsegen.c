@@ -100,7 +100,7 @@ struct st_wav {
 #define PCM_TYPE			16
 #define TIME_BASE			.03	/* seconds */
 #define	FREQ_FUNDAMENTAL	3500
-#define PI					3.1415926535897932
+#define PI					3.14159265358979323846264338327
 
 /**
 	harmonics used for the modulation
