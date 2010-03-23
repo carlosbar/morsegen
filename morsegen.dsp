@@ -95,10 +95,6 @@ SOURCE=.\gui.c
 # End Source File
 # Begin Source File
 
-SOURCE=.\morse.rc
-# End Source File
-# Begin Source File
-
 SOURCE=.\morsegen.c
 # End Source File
 # End Group
@@ -120,6 +116,10 @@ SOURCE=.\resource.h
 # Begin Source File
 
 SOURCE=.\icon1.ico
+# End Source File
+# Begin Source File
+
+SOURCE=.\morse.rc
 # End Source File
 # End Group
 # End Target
