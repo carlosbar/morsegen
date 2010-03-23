@@ -1,3 +1,16 @@
+/**
+ * Module Description: fast fourier transform analysis of a signal
+ *
+ * Copyright © 2010 Carlos Barcellos
+ *
+ * $Id$
+ * $Source$
+ * $Revision$
+ * $Date$
+ * $Author$
+ */
+static const char rcsid [] = "@(#) $Id$ $RCSfile$$Revision$";
+
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
