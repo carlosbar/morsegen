@@ -100,7 +100,7 @@ struct st_wav {
 #define PCM_TYPE			16
 #define TIME_BASE			.03	/* seconds */
 #define	FREQ_FUNDAMENTAL	3500
-#define PI					((double) 3.14159265)
+#define PI					3.1415926535897932
 
 /**
 	harmonics used for the modulation
@@ -276,6 +276,10 @@ static void newpoint(infoMode mode,int harmonic,int freq,int x,double y,int rate
 	if(freq != 0) return;
 	if(mode == im_start) {
 		f=fopen("stat.txt","w");
+		if(f) {
+			fprintf(f,";freq,rate,bps,total samples\n");
+			fprintf(f,";%d,%d,%d,%d\n",freq,rate,bps,totalsamples);
+		}
 	} else if(mode == im_end) {
 		if(f) fclose(f);
 		f=NULL;
