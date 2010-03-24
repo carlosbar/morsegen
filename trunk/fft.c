@@ -129,17 +129,17 @@ int main(int argc,char *argv[])
 	}
 	FFT(1,(long) ceil(log(samples)/log(2)),r,i);
 	for(x=0;x < samples/2;x++) {
-		/* amplitude is calculate from abs(complex) == sqrt(real^2 + imag^2)*2 */
+		/* magnitude (positive amplitude) is calculate from abs(complex) == sqrt(real^2 + imag^2)*2 */
 		amp=sqrt(r[x]*r[x]+i[x]*i[x])*2;
 		/* phase (in radians) is calculate from atan(imag/real) */
-		phase=180/PI*atan(i[x]/r[x]);
+		phase=(i[x]) ? 180/PI*atan(r[x]/i[x]) : 90;
 		r[x]=amp;
 		i[x]=phase;
 	}
 	f=fopen("fft.csv","w");
-	if(f) fprintf(f,"freq;amp;phase\n");
+	if(f) fprintf(f,"freq (hz);amp;phase (degree)\n");
 	for(x=0;f && x < samples/2;x++) {
-		fprintf(f,"%d;%d;%d\n",(samplerate*x/samples),(int) r[x],(int) i[x]);
+		fprintf(f,"%d;%.2f;%.0f\n",(samplerate*x/samples),r[x],i[x]);
 	}
 	if(f) fclose(f);
 	return(0);
