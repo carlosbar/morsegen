@@ -1,7 +1,7 @@
 /**
  * Module Description: morse code modulation and related definitions
  *
- * Copyright © 2010 Carlos Barcellos
+ * Copyright Â© 2010 Carlos Barcellos
  *
  * $Id$
  * $Source$
@@ -53,11 +53,11 @@ struct st_chunk {
 struct st_bext {
 	char			ckID[4];				/* (broadcastextension) ckID=bext */
 	int				ckSize:32;				/* size of extension chunk */
-	char			Description[256];		/* ASCII : «Description of the sound sequence» */
-	char			Originator[32];			/* ASCII : «Name of the originator» */
-	char			OriginatorReference[32];/* ASCII : «Reference of the originator» */
-	char			OriginationDate[10];	/* ASCII : «yyyy-mm-dd» */
-	char			OriginationTime[8];		/* ASCII : «hh-mm-ss» */
+	char			Description[256];		/* ASCII : Â«Description of the sound sequenceÂ» */
+	char			Originator[32];			/* ASCII : Â«Name of the originatorÂ» */
+	char			OriginatorReference[32];/* ASCII : Â«Reference of the originatorÂ» */
+	char			OriginationDate[10];	/* ASCII : Â«yyyy-mm-ddÂ» */
+	char			OriginationTime[8];		/* ASCII : Â«hh-mm-ssÂ» */
 	char			TimeReferenceLow;		/* First sample count since midnight low word */
 	char			TimeReferenceHigh;		/* First sample count since midnight, high word */
 	char			Version;				/* Version of the BWF; unsigned binary number */
@@ -98,7 +98,7 @@ struct st_wav {
 #define SAMPLE_RATE			44100
 #define BITS_PER_SAMPLE		16
 #define PCM_TYPE			16
-#define TIME_BASE			.03	/* seconds */
+#define TIME_BASE			.06	/* 60ms per dot or around 20 wpm using the word CODEX as a basis */
 #define	FREQ_FUNDAMENTAL	3500
 #define PI					3.14159265358979323846264338327
 
