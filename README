@@ -7,7 +7,7 @@ execute it
 
 Unixes:
 
-gcc morsegen.c -o morsegen -lm
+gcc -lm morsegen.c -o morsegen -lm
 
 after running, a file called morse.wav will be generated. A log file stat.txt is also generated with
 amplitude values during time (lines), this can be used to plot a wave graphic using a spreadsheet
