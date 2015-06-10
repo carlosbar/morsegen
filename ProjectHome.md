@@ -1,0 +1,1 @@
+This project aims to create a wave file modulating a Morse code. This is intended for beginners to see how to handle wave frequencies inside a wave file and also how to modulate morse code with PWM (Pulse Width Modulation)
